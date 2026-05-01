@@ -36,3 +36,12 @@ Extend base.html if it exists, otherwise match the style of landing.html.
 
 git add . 
 git commit -m "landing: add Privacy Policy page and route" 
+
+I have attached a screenshot of the updated Spendly hero section desion. 
+
+Modify only the hero section in @templates/landing.html and @static/css/landing.css
+to match this images exaclty. DO not touch any other part of the page. 
+
+git add .
+git commit -m "landing: redesign hero section to match the user clicks
+"See how it works"
