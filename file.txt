@@ -7,3 +7,16 @@ Both should be palin test links, no specia styling needed for now.
 Point both to "#" as placeholder herfs since the pages don't exist yet.
 
 Do not modify anything on the page. 
+
+git commit -m "landing: add terms and privacy links to footer"
+
+Create a "Terms and Conditions" aage for Spendly.
+
+1. Add a new route in [@app.py] (http://app.py): 
+GET /terms -> renders templates/terms.html
+2.Create template/terms.html with generic terms and conditions.
+content appropriate for personal expense tracking app. 
+Include sections like: Acceptance of terms, Use of services, User data, 
+Limitations of liability, and Changes to Terms. 
+Extend base.html if it exists, otherwise match the style of landing.html. 
+3.In @templates/landing.html, update the "Terms and Conditions" footer link href from # to /terms.
