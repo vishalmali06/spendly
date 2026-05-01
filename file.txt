@@ -20,3 +20,19 @@ Include sections like: Acceptance of terms, Use of services, User data,
 Limitations of liability, and Changes to Terms. 
 Extend base.html if it exists, otherwise match the style of landing.html. 
 3.In @templates/landing.html, update the "Terms and Conditions" footer link href from # to /terms.
+
+git add . 
+git commit -m "landing: add Terms and Conditions page and route" 
+
+Do the same as you did for the Terms and Conditions poage, but for Privacy Policy. 
+
+1. Add a new route in [@app.py] (http://app.py): 
+GET /privacy -> renders templates/privacy.html
+2.Create template/privacy.html with generic privacy Policy.
+content appropriate for personal expense tracking app. 
+Include sections like: Data we collect, How we Use Your Data, Data Storage, Thirtd Party Services, and Contact Us. 
+Extend base.html if it exists, otherwise match the style of landing.html. 
+3.In @templates/landing.html, update the "Privacy Policy" footer link href from # to /terms.
+
+git add . 
+git commit -m "landing: add Privacy Policy page and route" 
