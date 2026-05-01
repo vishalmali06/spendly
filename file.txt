@@ -1,0 +1,9 @@
+Add tow links to the footer in @template/base.html
+
+- "Terms and Conditions"
+- "Privacy Policy"
+
+Both should be palin test links, no specia styling needed for now.
+Point both to "#" as placeholder herfs since the pages don't exist yet.
+
+Do not modify anything on the page. 
