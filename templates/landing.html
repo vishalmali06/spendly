@@ -11,8 +11,13 @@
             Free to use · No credit card needed
         </div>
         <h1 class="hero-title">
-            <span class="hero-title-line">Track every rupee.</span>
-            <span class="hero-title-line hero-title-line-2">Know where it goes.</span>
+            {% if current_user %}
+                <span class="hero-title-line">Welcome back,</span>
+                <span class="hero-title-line hero-title-line-2">{{ current_user.name }}.</span>
+            {% else %}
+                <span class="hero-title-line">Track every rupee.</span>
+                <span class="hero-title-line hero-title-line-2">Know where it goes.</span>
+            {% endif %}
         </h1>
         <p class="hero-subtitle">
             Spendly helps you log expenses, spot patterns, and stay on budget —
