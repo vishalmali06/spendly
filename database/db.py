@@ -1,5 +1,91 @@
-# Students will write this file in Step 1 — Database Setup
-# This file should contain:
-#   get_db()   — returns a SQLite connection with row_factory and foreign keys enabled
-#   init_db()  — creates all tables using CREATE TABLE IF NOT EXISTS
-#   seed_db()  — inserts sample data for development
+import os
+import sqlite3
+
+from werkzeug.security import generate_password_hash
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "spendly.db")
+
+CATEGORIES = (
+    "Food",
+    "Transport",
+    "Bills",
+    "Health",
+    "Entertainment",
+    "Shopping",
+    "Other",
+)
+
+_SEED_EXPENSES = [
+    (12.50, "Food",          "2026-05-01", "Lunch at corner deli"),
+    (45.00, "Transport",     "2026-05-02", "Monthly metro pass top-up"),
+    (89.99, "Bills",         "2026-05-03", "Internet bill — May"),
+    (30.00, "Health",        "2026-05-03", "Pharmacy — vitamins"),
+    (18.75, "Entertainment", "2026-05-04", "Movie ticket"),
+    (64.20, "Shopping",      "2026-05-04", "New running shoes"),
+    ( 7.80, "Food",          "2026-05-05", "Morning coffee and pastry"),
+    (15.00, "Other",         "2026-05-05", "Birthday card and gift wrap"),
+]
+
+
+def get_db():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
+
+
+def init_db():
+    conn = get_db()
+    try:
+        with conn:
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS users (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT NOT NULL,
+                    email TEXT NOT NULL UNIQUE,
+                    password_hash TEXT NOT NULL,
+                    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+                )
+                """
+            )
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS expenses (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    amount REAL NOT NULL,
+                    category TEXT NOT NULL,
+                    date TEXT NOT NULL,
+                    description TEXT,
+                    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+                )
+                """
+            )
+    finally:
+        conn.close()
+
+
+def seed_db():
+    conn = get_db()
+    try:
+        with conn:
+            row = conn.execute("SELECT COUNT(*) AS n FROM users").fetchone()
+            if row["n"] > 0:
+                return
+
+            cur = conn.execute(
+                "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+                ("Demo User", "demo@spendly.com", generate_password_hash("demo123")),
+            )
+            user_id = cur.lastrowid
+
+            conn.executemany(
+                "INSERT INTO expenses (user_id, amount, category, date, description) "
+                "VALUES (?, ?, ?, ?, ?)",
+                [(user_id, *row) for row in _SEED_EXPENSES],
+            )
+    finally:
+        conn.close()
